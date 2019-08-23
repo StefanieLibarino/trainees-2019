@@ -1,0 +1,671 @@
+swagger: "2.0"
+info:
+  description: "Filmes API"
+  version: "1.0.0"
+  title: "API de filmes"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/filmes-api/v1"
+produces:
+  - "application/json"
+consumes: 
+  - "application/json"
+schemes:
+- "https"
+tags: 
+  - name: "Filmes"
+  - name: "Artistas"
+  - name: "Generos"
+paths:
+  /filmes:
+    post:
+      tags:
+        - "Filmes"
+      summary: "Cadastro de Filme"
+      operationId: "createFilme"
+      parameters:
+      - in: body
+        name: "request"
+        required: true
+        schema:
+             $ref: "#/definitions/Filme"
+      responses:
+        201:
+          description: "Filme cadastrado com sucesso"
+          schema:
+            properties:
+              id:
+                type: integer
+                format: int32
+              nome:
+                type: string
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  /filmes/Listar:
+     get:
+      tags:
+        - "Filmes"
+      summary: "Retorna uma lista de filmes"
+      operationId: "getFilmes"
+      parameters: 
+       - $ref: "#/parameters/Page"
+       - $ref: "#/parameters/Size"
+      responses:
+         200: 
+           description: "Lista apresentada com sucesso"
+           schema: 
+             properties:
+                type: array
+                items:
+                  $ref: "#/definitions/Filme"
+         400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+         403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+ 
+  /filmes/{Id}/consulta:
+    get:
+      tags:
+        - "Filmes"
+      summary: "Consulta informações gerais de filmes"
+      operationId: "getFilmeDetails"
+      parameters:
+      - $ref: "#/parameters/Id"
+      - $ref: "#/parameters/Page"
+      - $ref: "#/parameters/Size"
+      responses:
+        200:
+          description: "Consulta efeituada com sucesso"
+          schema:
+            properties:
+              id:
+                type: integer
+                format: int32
+              nome:
+                type: string
+              autor:
+                type: string
+              ano:
+                type: integer
+                format: int32
+              genero:
+                 type: string
+        400:
+          description: "Parâmetros informados inválidos"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filmes não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /filme/Atualizar:
+    put:
+      tags:
+       - "Filmes"
+      summary: "Atualiza um filme especifico"
+      operationId: "updateFilme"
+      parameters:
+      - $ref: "#/parameters/Id"
+      responses: 
+        200:
+          description: "Filme atualizado com sucesso"
+          schema:
+            $ref: "#parameters/Id"
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  /filme/Remover:
+     delete:
+       tags:
+        - "Filmes"
+       summary: "Remove filme especifico"
+       operationId: "deleteFilme"
+       parameters:
+        - $ref: "#/parameters/Id"
+       responses: 
+         200:
+           description: "Filme removido com sucesso"
+           schema:
+             $ref: "#parameters/Id"
+         400:
+           description: "Parâmetros informados inválidos "
+           schema:
+             $ref: "#/definitions/ResponseError"
+         403:
+           description: "Não autorizado"  
+           schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+           description: "Dados não encontrado"
+           schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        
+  /artista: 
+     post:
+       tags:
+         - "Artistas"
+       summary: "Cadastro de artista"
+       operationId: "createArtista"
+       parameters:
+        - in: body
+          name: "request"
+          required: true
+          schema:
+            $ref: "#/definitions/Artista"
+       responses:
+         201:
+          description: "Artista cadastrado com sucesso"
+          schema:
+            properties:
+              id:
+                type: integer
+                format: int32
+              nome:
+                type: string
+         400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+         403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  /artista/Lista:
+     get:
+      tags:
+        - "Artistas"
+      summary: "Retorna uma lista de artistas"
+      operationId: "getArtistas"
+      parameters: 
+       - $ref: "#/parameters/Page"
+       - $ref: "#/parameters/Size"
+      responses:
+         200: 
+            description: "Lista apresentada com sucesso"
+            schema: 
+              properties:
+                type: array
+               items:
+                    $ref: "#/definitions/Artista"
+         400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+         403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /artista/{Id}/consulta:
+   get:
+     tags:
+        - "Artistas"
+     summary: "Consulta informações gerais de artistas"
+     operationId: "getArtistaDetails"
+     parameters:
+      - $ref: "#/parameters/Id"
+      - $ref: "#/parameters/Page"
+      - $ref: "#/parameters/Size"
+     responses:
+        200:
+          description: "Consulta efeituada com sucesso"
+          schema:
+           properties:
+            nome:
+              type: string
+            idade:
+              type: integer
+              format: int32
+            cidade: 
+              type: string
+            premiacoes: 
+              type: string
+            filmes:
+               type: string
+        400:
+          description: "Parâmetros informados inválidos"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filmes não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /artista/Atualizar:
+     put:
+       tags:
+         - "Artistas"
+       summary: "Atualiza um artista especifico"
+       operationId: "updateArtista"
+       parameters:
+       - $ref: "#/parameters/Id"
+       responses: 
+         200:
+           description: "Artista atualizado com sucesso"
+           schema:
+             $ref: "#parameters/Id"
+         400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+         403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  /artista/Remover:
+     delete:
+       tags:
+         - "Artistas"
+       summary: "Remove um artista especifico"
+     operationId: "deleteArtista"
+     parameters:
+     - $ref: "#/parameters/Id"
+     responses: 
+        200:
+          description: "Artista removido com sucesso"
+          schema:
+            $ref: "#parameters/Id"
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         
+  /genero: 
+    post:
+      tags:
+      - "Filme"
+      summary: "Cadastro de gênero"
+      operationId: "createGenero"
+      parameters:
+      - in: body
+        name: "request"
+        required: true
+        schema:
+          - $ref: "#/definitions/Genero"
+      responses:
+        201:
+          description: "Genero cadastrado com sucesso"
+          schema:
+            - $ref: "#/definitions/Genero"
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+      
+  /genero/Lista:
+     get:
+      tags:
+        - "Generos"
+      summary: "Retorna uma lista de generos"
+      operationId: "getGenero"
+      parameters: 
+       - $ref: "#/parameters/Page"
+       - $ref: "#/parameters/Size"
+      responses:
+         200: 
+            description: "Lista apresentada com sucesso"
+            schema: 
+              properties:
+                type: array
+                items:
+                  $ref: "#/definitions/Genero"
+         400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+         404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+         500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /genero/{Id}/consulta:
+   get:
+     tags:
+        - "Generos"
+     summary: "Consulta informações gerais de generos"
+     operationId: "getGeneroDetails"
+     parameters:
+      - $ref: "#/parameters/Id"
+      - $ref: "#/parameters/Page"
+      - $ref: "#/parameters/Size"
+     responses:
+        200:
+          description: "Consulta efeituada com sucesso"
+          schema:
+            properties:
+              genero:
+                type: array
+                items:
+                  $ref: "#definitions/Genero"
+             favoritos:
+              type: string
+        400:
+          description: "Parâmetros informados inválidos"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Filmes não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+            
+  /genero/Atualizar:
+     put:
+     tags:
+       - "Generos"
+     summary: "Atualiza um genero especifico"
+     operationId: "updateGenero"
+     parameters:
+     - $ref: "#/parameters/Id"
+     responses: 
+        200:
+          description: "Gênero atualizado com sucesso"
+          schema:
+            $ref: "#parameters/Id"
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  
+  /genero/Remover:
+     delete:
+     tags:
+       - "Gêneros"
+     summary: "Remove um gênero especifico"
+     operationId: "deleteGenero"
+     parameters:
+     - $ref: "#/parameters/Id"
+     responses: 
+        200:
+          description: "Gênero removido com sucesso"
+          schema:
+            $ref: "#parameters/Id"
+        400:
+          description: "Parâmetros informados inválidos "
+          schema:
+            $ref: "#/definitions/ResponseError"
+        403:
+          description: "Não autorizado"  
+          schema:
+            $ref: "#/definitions/ResponseError"
+        404:
+          description: "Dados não encontrado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+        500:
+          description: "Erro não mapeado"
+          schema:
+            $ref: "#/definitions/ResponseError"
+  /filme/filmografia:
+    get:
+     tags:
+       - "Filmes"
+      summary: "Consulta dados da filmografia"
+      operationId: "getFilmografia"
+      parameters: 
+       - $ref: "#/parameters/Id"
+       - $ref: "#/parameters/Page"
+       - $ref: "#/parameters/Size"
+    responses:
+      200:
+         description: "Filmografia consultada com sucesso"
+         schema:
+            $ ref: "#/definitions/Filmografia"
+      400:
+         description: "Parâmetros informados inválidos"
+         schema:
+            $ref: "#/definitions/ResponseError"
+      404:
+         description: "Filmografia não encontrado"
+         schema:
+            $ref: "#/definitions/ResponseError"
+      500:
+         description: "Erro não mapeado"
+         schema:
+            $ref: "#/definitions/ResponseError"
+     
+
+definitions:
+  ResponseError:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      messages:
+        type: array
+        items:
+          type: string
+      cause:
+        type: object
+        properties:
+          name:
+            type: string
+          code:
+            type: number
+          message:
+            type: string
+  
+  Filme:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      nome:
+        type: string
+      genero:
+        type: string
+        enum:
+           - Comedia
+           - Ficcao
+           - Aventura
+           - Terror
+           - Romance
+      ator:
+        type: string
+      ano:
+        type: integer
+        format: int32
+    
+  Filmografia:
+    type: object
+    properties:
+      id:
+       type: integer
+       format: int32
+      filme: 
+        type: string
+      ator:
+        type: string
+      diretor:
+        type: string
+      produtor: 
+        type: string
+        
+  Artista:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      nome:
+        type: string
+      filmes:
+        $ref: '#/definitions/Filme'
+  
+  Genero:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int32
+      type: string
+        enum:
+          - "Comedia"
+          - "Ficcao"
+          - "Aventura"
+          - "Terror"
+          - "Romance"
+
+parameters:
+  Nome:
+    in: path
+    name: "nome"
+    type: integer
+    format: int32
+    required: true
+
+  Id:
+    in: path
+    name: "id"
+    type: integer
+    format: int32
+    required: true
+
+  Page:
+    in: query
+    name: page
+    type: number
+    format: int32
+    default: 1
+  
+  Size:
+    in: query
+    name: size
+    type: number
+    format: int32
+    default: 20
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
+# Added by API Auto Mocking Plugin
+#host: virtserver.swaggerhub.com
+#basePath: /StefanieLibarino/Filmes/1.0.0
